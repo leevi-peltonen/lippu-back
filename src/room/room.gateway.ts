@@ -4,7 +4,7 @@ import { RoomService } from './room.service';
 
 @WebSocketGateway({
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'https://courageous-bubblegum-433632.netlify.app/',
         methods: ['GET', 'POST'],
         credentials: true,
     }
