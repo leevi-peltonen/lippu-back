@@ -2,13 +2,13 @@ import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnectio
 import { Server, Socket } from 'socket.io';
 import { RoomService } from './room.service';
 
-@WebSocketGateway(/*{
+@WebSocketGateway({
     cors: {
         origin: 'https://courageous-bubblegum-433632.netlify.app',
         methods: ['GET', 'POST'],
         credentials: true,
     }
-}*/)
+})
 export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
