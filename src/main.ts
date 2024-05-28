@@ -1,14 +1,15 @@
 import { NestFactory } from '@nestjs/core';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-
-    // app.enableCors({
-    //     origin: 'https://courageous-bubblegum-433632.netlify.app',
-    //     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    //     credentials: true,
-    // });
+    app.useWebSocketAdapter(new IoAdapter(app))
+    app.enableCors({
+        origin: 'https://courageous-bubblegum-433632.netlify.app',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    });
 
     await app.listen(3000);
 }
