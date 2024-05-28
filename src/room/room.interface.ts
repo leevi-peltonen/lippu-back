@@ -3,4 +3,5 @@ export interface Room {
     users: string[]
     difficulty: 'easy' | 'medium' | 'hard'
     length: number
+    gamemode: 'Klassikko' | 'Aikapommi'
 }

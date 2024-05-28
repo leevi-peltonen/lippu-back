@@ -23,13 +23,14 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('createRoom')
-  handleCreateRoom(client: Socket, data: {userId: string, difficulty: 'easy'|'medium'|'hard', length: number}): void {
-    const room = this.roomService.createRoom(data.userId, data.difficulty, data.length);
+  handleCreateRoom(client: Socket, data: {userId: string, difficulty: 'easy'|'medium'|'hard', length: number, gamemode: 'Klassikko' | 'Aikapommi'}): void {
+    const room = this.roomService.createRoom(data.userId, data.difficulty, data.length, data.gamemode);
     client.join(room.code);
     client.emit('roomCreated', room.code);
     this.server.to(room.code).emit('userJoined', data.userId);
     this.server.to(room.code).emit('updateUsers', this.roomService.getUsersInRoom(room.code));
     this.server.to(room.code).emit('updateGameState', this.roomService.getGameState(room.code));
+    this.server.emit('rooms', this.roomService.getAllRooms())
   }
 
   @SubscribeMessage('joinRoom')
@@ -66,6 +67,12 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } catch (error) {
       client.emit('error', error.message);
     }
+  }
+
+  @SubscribeMessage('requestRooms')
+  handleRequestRooms(client:Socket): void {
+    const rooms = this.roomService.getAllRooms()
+    client.emit('rooms', rooms)
   }
 
   @SubscribeMessage('requestFlags')

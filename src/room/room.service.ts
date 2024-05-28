@@ -51,8 +51,8 @@ export class RoomService {
     }
   }
 
-  createRoom(userId: string, difficulty: 'easy' | 'medium' | 'hard', length: number): Room {
-    const room: Room = { code: this.generateRoomCode(), users: [userId], difficulty, length};
+  createRoom(userId: string, difficulty: 'easy' | 'medium' | 'hard', length: number, gamemode: 'Klassikko' | 'Aikapommi'): Room {
+    const room: Room = { code: this.generateRoomCode(), users: [userId], difficulty, length, gamemode};
     this.rooms.push(room);
     const flag = this.getCountryCode(difficulty)
     const options = this.getWrongAnswers(difficulty, flag.code)
@@ -87,6 +87,10 @@ export class RoomService {
 
   getRoom(code: string): Room {
     return this.rooms.find(room => room.code === code);
+  }
+
+  getAllRooms(): Room[] {
+    return this.rooms
   }
 
   getUsersInRoom(code: string): string[] {
